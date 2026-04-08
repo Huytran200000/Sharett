@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Hiển thị mã</title>
+<title>Bảng mã</title>
 
 <style>
 
@@ -15,36 +15,34 @@ margin-top:40px;
 }
 
 textarea{
-width:400px;
+width:420px;
 height:120px;
 margin-bottom:15px;
 }
 
-.container{
-display:flex;
-flex-direction:column;
-gap:8px;
-align-items:center;
+table{
+border-collapse:collapse;
+margin-top:20px;
 }
 
-.row{
-display:flex;
-gap:10px;
-}
-
-.cell{
+td{
 border:1px solid black;
+padding:4px;
 text-align:center;
 cursor:pointer;
-padding:4px;
 }
 
-.row1 .cell{
+.colA{
 width:5cm;
 }
 
-.row2 .cell{
+.colB{
 width:4cm;
+}
+
+.copied{
+background:#4CAF50;
+color:white;
 }
 
 </style>
@@ -53,16 +51,13 @@ width:4cm;
 
 <body>
 
-<h3>Dán dữ liệu Excel</h3>
+<h3>Dán dữ liệu từ Excel</h3>
 
 <textarea id="input"></textarea>
 <br>
 <button onclick="render()">Hiển thị</button>
 
-<div class="container">
-<div class="row row1" id="row1"></div>
-<div class="row row2" id="row2"></div>
-</div>
+<table id="table"></table>
 
 <script>
 
@@ -71,32 +66,32 @@ function render(){
 let text=document.getElementById("input").value.trim();
 let rows=text.split(/\r?\n/);
 
-let r1="";
-let r2="";
+let html="";
 
 for(let i=0;i<rows.length;i++){
 
 let cell=rows[i].split(/\t/);
 
-if(cell[0]){
-r1+=`<div class="cell" onclick="copyText('${cell[0]}')">${cell[0]}</div>`;
-}
+html+="<tr>";
 
-if(cell[1]){
-r2+=`<div class="cell" onclick="copyText('${cell[1]}')">${cell[1]}</div>`;
-}
+html+=`<td class="colA" onclick="copy(this,'${cell[0]||""}')">${cell[0]||""}</td>`;
+html+=`<td class="colB" onclick="copy(this,'${cell[1]||""}')">${cell[1]||""}</td>`;
 
-}
-
-document.getElementById("row1").innerHTML=r1;
-document.getElementById("row2").innerHTML=r2;
+html+="</tr>";
 
 }
 
-function copyText(text){
+document.getElementById("table").innerHTML=html;
+
+}
+
+function copy(el,text){
+
+if(!text) return;
 
 navigator.clipboard.writeText(text);
-alert("Đã copy: "+text);
+
+el.classList.add("copied");
 
 }
 
