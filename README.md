@@ -2,76 +2,101 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Chia dữ liệu Excel thành 2 cột</title>
+<title>Hiển thị mã</title>
 
 <style>
+
 body{
 font-family: Arial;
-margin:20px;
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-top:40px;
 }
 
 textarea{
-width:100%;
+width:400px;
 height:120px;
-font-size:14px;
-}
-
-button{
-margin-top:10px;
-padding:8px 15px;
+margin-bottom:15px;
 }
 
 .container{
 display:flex;
-gap:20px;
-margin-top:20px;
+flex-direction:column;
+gap:8px;
+align-items:center;
 }
 
-.column{
-flex:1;
-border:1px solid #333;
-padding:10px;
-min-height:200px;
-background:#f5f5f5;
+.row{
+display:flex;
+gap:10px;
 }
+
+.cell{
+border:1px solid black;
+text-align:center;
+cursor:pointer;
+padding:4px;
+}
+
+.row1 .cell{
+width:5cm;
+}
+
+.row2 .cell{
+width:4cm;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h3>Dán dữ liệu từ Excel</h3>
+<h3>Dán dữ liệu Excel</h3>
 
-<textarea id="inputData" placeholder="Copy từ Excel rồi dán vào đây"></textarea>
+<textarea id="input"></textarea>
 <br>
-<button onclick="processData()">Hiển thị</button>
+<button onclick="render()">Hiển thị</button>
 
 <div class="container">
-<div class="column" id="col1"></div>
-<div class="column" id="col2"></div>
+<div class="row row1" id="row1"></div>
+<div class="row row2" id="row2"></div>
 </div>
 
 <script>
 
-function processData(){
+function render(){
 
-let text = document.getElementById("inputData").value.trim();
+let text=document.getElementById("input").value.trim();
+let rows=text.split(/\r?\n/);
 
-let rows = text.split(/\r?\n/);
-
-let col1="";
-let col2="";
+let r1="";
+let r2="";
 
 for(let i=0;i<rows.length;i++){
 
-let cells = rows[i].split(/\t/);
+let cell=rows[i].split(/\t/);
 
-if(cells[0]) col1 += cells[0] + "<br>";
-if(cells[1]) col2 += cells[1] + "<br>";
+if(cell[0]){
+r1+=`<div class="cell" onclick="copyText('${cell[0]}')">${cell[0]}</div>`;
+}
+
+if(cell[1]){
+r2+=`<div class="cell" onclick="copyText('${cell[1]}')">${cell[1]}</div>`;
+}
 
 }
 
-document.getElementById("col1").innerHTML = col1;
-document.getElementById("col2").innerHTML = col2;
+document.getElementById("row1").innerHTML=r1;
+document.getElementById("row2").innerHTML=r2;
+
+}
+
+function copyText(text){
+
+navigator.clipboard.writeText(text);
+alert("Đã copy: "+text);
 
 }
 
