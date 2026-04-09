@@ -32,6 +32,7 @@ margin-top:10px;
 
 table{
 border-collapse:collapse;
+table-layout:fixed;   /* giữ kích thước cột cố định */
 }
 
 td{
@@ -39,10 +40,17 @@ border:1px solid black;
 padding:5px;
 text-align:center;
 cursor:pointer;
+height:28px;          /* chiều cao cố định */
+vertical-align:middle;
 }
 
-.colA{ width:5cm; }
-.colB{ width:4cm; }
+.colA{
+width:5cm;
+}
+
+.colB{
+width:4cm;
+}
 
 .active{
 background:#2196F3;
