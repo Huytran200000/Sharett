@@ -18,12 +18,16 @@ align-items:flex-start;
 }
 
 .left{
-width:400px;
+width:420px;
 }
 
 textarea{
 width:100%;
 height:200px;
+}
+
+.controls{
+margin-top:10px;
 }
 
 table{
@@ -45,12 +49,8 @@ background:#2196F3;
 color:white;
 }
 
-.pagination{
-margin-top:10px;
-}
-
 button{
-margin:3px;
+margin:2px;
 }
 
 </style>
@@ -61,15 +61,25 @@ margin:3px;
 <div class="main">
 
 <div class="left">
+
 <h3>Dán dữ liệu Excel</h3>
+
 <textarea id="input"></textarea>
-<br><br>
+
+<div class="controls">
+
 <button onclick="loadData()">Hiển thị</button>
+
+<span id="pages"></span>
+
+</div>
+
 </div>
 
 <div class="right">
+
 <table id="table"></table>
-<div class="pagination" id="pages"></div>
+
 </div>
 
 </div>
@@ -78,7 +88,7 @@ margin:3px;
 
 let data=[];
 let page=1;
-let rowsPerPage=30;
+const rowsPerPage=30;
 let lastCell=null;
 
 function loadData(){
@@ -95,30 +105,36 @@ data.push([cell[0]||"",cell[1]||""]);
 
 page=1;
 render();
+renderPages();
 
 }
 
 function render(){
 
 let start=(page-1)*rowsPerPage;
-let end=start+rowsPerPage;
 
 let html="";
 
-for(let i=start;i<end && i<data.length;i++){
+for(let i=0;i<rowsPerPage;i++){
+
+let index=start+i;
+
+let a="";
+let b="";
+
+if(index<data.length){
+a=data[index][0];
+b=data[index][1];
+}
 
 html+="<tr>";
-
-html+=`<td class="colA" onclick="copy(this,'${data[i][0]}')">${data[i][0]}</td>`;
-html+=`<td class="colB" onclick="copy(this,'${data[i][1]}')">${data[i][1]}</td>`;
-
+html+=`<td class="colA" onclick="copy(this,'${a}')">${a}</td>`;
+html+=`<td class="colB" onclick="copy(this,'${b}')">${b}</td>`;
 html+="</tr>";
 
 }
 
 document.getElementById("table").innerHTML=html;
-
-renderPages();
 
 }
 
@@ -152,6 +168,7 @@ lastCell.classList.remove("active");
 }
 
 el.classList.add("active");
+
 lastCell=el;
 
 }
