@@ -2,32 +2,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bảng mã</title>
+<title>Công cụ copy mã</title>
 
 <style>
 
 body{
-font-family: Arial;
+font-family:Arial;
+margin:20px;
+}
+
+.main{
 display:flex;
-flex-direction:column;
-align-items:center;
-margin-top:40px;
+gap:40px;
+align-items:flex-start;
+}
+
+.left{
+width:400px;
 }
 
 textarea{
-width:420px;
-height:120px;
-margin-bottom:15px;
+width:100%;
+height:200px;
 }
 
 table{
 border-collapse:collapse;
-margin-top:20px;
 }
 
 td{
 border:1px solid black;
-padding:4px;
+padding:5px;
 text-align:center;
 cursor:pointer;
 }
@@ -40,8 +45,8 @@ width:5cm;
 width:4cm;
 }
 
-.copied{
-background:#4CAF50;
+.active{
+background:#2196F3;
 color:white;
 }
 
@@ -51,15 +56,30 @@ color:white;
 
 <body>
 
-<h3>Dán dữ liệu từ Excel</h3>
+<div class="main">
+
+<div class="left">
+
+<h3>Dán dữ liệu Excel</h3>
 
 <textarea id="input"></textarea>
-<br>
+<br><br>
+
 <button onclick="render()">Hiển thị</button>
+
+</div>
+
+<div class="right">
 
 <table id="table"></table>
 
+</div>
+
+</div>
+
 <script>
+
+let lastCell=null;
 
 function render(){
 
@@ -91,7 +111,13 @@ if(!text) return;
 
 navigator.clipboard.writeText(text);
 
-el.classList.add("copied");
+if(lastCell){
+lastCell.classList.remove("active");
+}
+
+el.classList.add("active");
+
+lastCell=el;
 
 }
 
