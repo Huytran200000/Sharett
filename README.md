@@ -32,15 +32,14 @@ margin-top:10px;
 
 table{
 border-collapse:collapse;
-table-layout:fixed;   /* giữ kích thước cột cố định */
+table-layout:fixed;
 }
 
 td{
 border:1px solid black;
-padding:5px;
 text-align:center;
 cursor:pointer;
-height:28px;          /* chiều cao cố định */
+height:0.5cm;       /* chiều cao ô */
 vertical-align:middle;
 }
 
@@ -96,7 +95,7 @@ margin:2px;
 
 let data=[];
 let page=1;
-const rowsPerPage=30;
+const rowsPerPage=25;   /* 25 hàng */
 let lastCell=null;
 
 function loadData(){
