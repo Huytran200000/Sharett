@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Tạo chuỗi & QR từ Excel</title>
+<style>
+body{font-family:Arial;margin:30px;background:#eef2f5}
+textarea{width:100%;height:180px}
+table{border-collapse:collapse;margin-top:20px;width:100%;background:white}
+th,td{border:1px solid #ccc;padding:8px}
+img{width:120px}
+</style>
+</head>
+
+<body>
+
+<h2>Tạo QR theo format</h2>
+
+<p>Dán dữ liệu copy từ Excel:</p>
+
+<textarea id="input"></textarea>
+<br><br>
+<button onclick="generate()">Tạo QR</button>
+
+<table>
+<thead>
+<tr>
+<th>A (LITEON)</th>
+<th>B (Part)</th>
+<th>C (Lot)</th>
+<th>G (Model)</th>
+<th>Chuỗi</th>
+<th>QR</th>
+</tr>
+</thead>
+
+<tbody id="tbody"></tbody>
+</table>
+
+<script>
+
+function buildString(a,b,c,g){
+let lot=c.substring(0,2);
+return "P"+b+";D20260428;L1;V"+g+";Q"+lot+";R;U;S"+a+";C;X;O";
+}
+
+function generate(){
+
+let rows=document.getElementById("input").value.trim().split(/\n+/);
+let tbody=document.getElementById("tbody");
+tbody.innerHTML="";
+
+rows.forEach(r=>{
+
+let cols=r.split(/\t|,/);
+
+if(cols.length>=7){
+
+let A=cols[0];
+let B=cols[1];
+let C=cols[2];
+let G=cols[6];
+
+let result=buildString(A,B,C,G);
+
+let qr="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="+encodeURIComponent(result);
+
+let tr=document.createElement("tr");
+
+tr.innerHTML=
+"<td>"+A+"</td>"+
+"<td>"+B+"</td>"+
+"<td>"+C+"</td>"+
+"<td>"+G+"</td>"+
+"<td>"+result+"</td>"+
+"<td><img src='"+qr+"'></td>";
+
+tbody.appendChild(tr);
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
